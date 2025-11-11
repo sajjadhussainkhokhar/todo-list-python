@@ -5,8 +5,6 @@ from .models import Project
 from dotenv import load_dotenv
 import os
 
-
-
 class ProjectView(APIView):
     permission_classes = [IsAuthenticated]
 
