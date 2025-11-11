@@ -12,7 +12,7 @@ class Task(models.Model):
         ('medium', 'Medium'),
         ('high', 'High'),
     )
-
+    project = models.ForeignKey('project.Project', on_delete=models.CASCADE, related_name='tasks', null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks')
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
