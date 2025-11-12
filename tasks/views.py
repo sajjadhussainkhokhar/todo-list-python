@@ -1,7 +1,6 @@
 from rest_framework import generics, permissions
 from .models import Task
 from .serializers import TaskSerializer
-from rest_framework.response import Response
 
 # List all tasks for the logged-in user
 class TaskListView(generics.ListAPIView):

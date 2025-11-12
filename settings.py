@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'tasks',
     'users',
     'project',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -102,6 +103,17 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306',
     }
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': "Enter token as: **Bearer &lt;your_jwt_token&gt;**",
+        }
+    },
 }
 
 
