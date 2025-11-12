@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from project.models import Project
+
 
 class Task(models.Model):
     STATUS_CHOICES = (
@@ -12,8 +14,8 @@ class Task(models.Model):
         ('medium', 'Medium'),
         ('high', 'High'),
     )
-    project = models.ForeignKey('project.Project', on_delete=models.CASCADE, related_name='tasks', null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks')
+    project = models.ForeignKey(Project, null=True, blank=True, on_delete=models.CASCADE, related_name='tasks')
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')

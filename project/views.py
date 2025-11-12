@@ -5,9 +5,30 @@ from .models import Project
 from dotenv import load_dotenv
 import os
 
-class ProjectView(APIView):
+class ProjectListView(APIView):
     permission_classes = [IsAuthenticated]
+    def get(self, request):
+        projects = Project.objects.all().values('id', 'name', 'description', 'created_at', 'updated_at')
+        return Response(list(projects))
 
+class ProjectCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        if request.method == 'POST':
+            load_dotenv()
+            name =  os.getenv("PROJECT_NAME") + '-' + request.data.get('name')
+            description = request.data.get('description')
+            project = Project.objects.create(name=name, description=description)
+            return Response({
+                'id': project.id,
+                'name': project.name,
+                'description': project.description,
+                'created_at': project.created_at,
+                'updated_at': project.updated_at,
+            }, status=201)
+
+class ProjectDetailView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request,pk = None):
         if pk:
             try:
@@ -23,25 +44,6 @@ class ProjectView(APIView):
                 'updated_at': project.updated_at,
             }
             return Response(project_data)
-    
-        projects = Project.objects.all().values('id', 'name', 'description', 'created_at', 'updated_at')
-        return Response(list(projects))
-
-    def post(self, request):
-        if request.method == 'POST':
-            load_dotenv()
-            name =  os.getenv("PROJECT_NAME") + '-' + request.data.get('name')
-            description = request.data.get('description')
-            project = Project.objects.create(name=name, description=description)
-            return Response({
-                'id': project.id,
-                'name': project.name,
-                'description': project.description,
-                'created_at': project.created_at,
-                'updated_at': project.updated_at,
-            }, status=201)
-
-
     def put(self, request, pk):
         try:
             project = Project.objects.get(pk=pk)
